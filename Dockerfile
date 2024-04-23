@@ -6,6 +6,8 @@ COPY . /app/
 
 COPY package*.json /app/
 
+RUN nvm install --lts
+
 RUN npm install
 
 RUN npm run build
