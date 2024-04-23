@@ -1,66 +1,58 @@
 {
   "name": "metallic",
-  "version": "1.9",
-  "description": "A powerful web proxy build for speed and customization.",
-  "repository": "https://github.com/cognetwork-dev/Metallic.git",
+  "version": "2.0.0",
+  "description": "A powerful web proxy built for speed and customization.",
+  "repository": "https://github.com/cognetwork-dev/Metallic",
   "license": "MIT",
   "author": "Nebelung",
   "type": "module",
+  "scripts": {
+    "start": "npm run test && tsx index.ts",
+    "dev": "npm run test && vite",
+    "build": "npm run test && tsc && vite build",
+    "preview": "npm run test && vite preview",
+    "test": "ava"
+  },
   "dependencies": {
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
-    "@mui/icons-material": "^5.11.11",
-    "@mui/styled-engine": "^5.11.11",
-    "@tomphttp/bare-client": "^1.1.1",
-    "chalk": "^5.2.0",
-    "clsx": "^1.2.1",
-    "http-server": "^14.1.1",
-    "i18next": "^22.4.13",
-    "i18next-fs-backend": "^2.1.1",
-    "i18next-http-backend": "^2.2.0",
+    "@ekwoka/preact-global-state": "^2.0.0",
+    "@mercuryworkshop/bare-mux": "^1.0.5",
+    "@mercuryworkshop/epoxy-transport": "^1.0.2",
+    "@tomphttp/bare-client": "^2.2.0-alpha",
+    "@tomphttp/bare-server-node": "^2.0.3",
+    "@types/express": "^4.17.21",
+    "@types/ws": "^8.5.10",
+    "clsx": "^2.1.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.3",
+    "hidden-from-bots-react": "^1.0.0",
+    "i18next": "^23.10.1",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "preact": "^10.19.6",
+    "preact-router": "^4.1.2",
+    "preact-virtual-list": "^0.3.1",
+    "rammerhead": "https://github.com/holy-unblocker/rammerhead/releases/download/v1.2.41-holy.5/rammerhead-1.2.41-holy.5.tgz",
     "random-seed": "^0.3.0",
-    "react-i18next": "^12.2.0",
-    "react-router-dom": "^6.9.0",
-    "react-tsparticles": "^2.9.3",
-    "tsparticles": "^2.9.3",
-    "vite-plugin-rewrite-all": "^1.0.1",
-    "vite-plugin-svgr": "^2.4.0"
+    "react-i18next": "^14.1.0",
+    "react-virtual-list": "^2.3.0",
+    "tsx": "^4.7.1",
+    "uninstall": "^0.0.0",
+    "vite-plugin-minify": "^1.5.2",
+    "vite-plugin-static-copy": "^1.0.1",
+    "wisp-server-node": "^1.0.1",
+    "ws": "^8.16.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.4.3",
-    "@tomphttp/bare-server-node": "^1.2.5",
-    "@vitejs/plugin-react": "^3.1.0",
-    "eslint": "^8.36.0",
-    "prettier": "^2.8.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "serve-static": "^1.15.0",
-    "vite": "^4.2.1",
-    "web-vitals": "^3.3.0"
+    "@preact/preset-vite": "^2.8.1",
+    "autoprefixer": "^10.4.18",
+    "ava": "^6.1.2",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.5"
   },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build && node build.mjs",
-    "start": "node start.mjs"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "engines": {
+    "npm": ">=10.2.4",
+    "node": ">=20.11.1"
   }
 }

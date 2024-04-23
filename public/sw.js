@@ -1,63 +1,31 @@
-var cacheName = "metallic";
-var filesToCache = ["/sw.js"];
+importScripts("/epoxy/index.js");
+importScripts("/ultraviolet/ultraviolet.bundle.js");
+importScripts("/ultraviolet/ultraviolet.config.js");
+importScripts(__uv$config.sw || "/ultraviolet/ultraviolet.sw.js");
+importScripts("/dynamic/dynamic.config.js");
+importScripts("/dynamic/dynamic.worker.js");
 
-self.addEventListener("install", function (e) {
-  e.waitUntil(
-    caches.open(cacheName).then(function (cache) {
-      return cache.addAll(filesToCache);
-    })
-  );
-  self.skipWaiting();
-});
+const sw = new UVServiceWorker();
+const dynamic = new Dynamic();
 
-async function handleRequest(fetchPath) {
-  var CDN = "https://raw.githubusercontent.com/3kh0/3kh0-Assets/main"
+self.dynamic = dynamic;
 
-  fetchPath = CDN + "/" + fetchPath;
+self.addEventListener("fetch", (event) => {
+    if (
+        event.request.url.startsWith(location.origin + self.__dynamic$config.prefix)
+    ) {
+        event.respondWith(
+            (async function () {
+                if (await dynamic.route(event)) {
+                    return await dynamic.fetch(event);
+                }
 
-  if (!fetchPath.endsWith(".html") && !fetchPath.endsWith(".css") && !fetchPath.endsWith(".js")) {
-    try {
-      return await fetch(fetchPath);
-    } catch (error) {
-      console.error(`Fetch request for ${fetchPath} failed with error: ${error}`);
+                return await fetch(event.request);
+            })()
+        );
+    } else if (
+        event.request.url.startsWith(location.origin + __uv$config.prefix)
+    ) {
+        event.respondWith(sw.fetch(event));
     }
-  }
-
-  try {
-    var customFetch = await fetch(fetchPath);
-    var htmlCode = await customFetch.text();
-
-    var newHeaders = Object.assign({}, customFetch.rawHeaders);
-
-    if (fetchPath.endsWith(".html")) {
-      newHeaders["content-type"] = "text/html";
-    } else if (fetchPath.endsWith(".css")) {
-      newHeaders["content-type"] = "text/css";
-    } else if (fetchPath.endsWith(".js")) {
-      newHeaders["content-type"] = "text/javascript";
-    }
-
-    return new Response(htmlCode, {
-      status: customFetch.status,
-      headers: newHeaders,
-    });
-  } catch (error) {
-    console.error(`Fetch request for ${fetchPath} failed with error: ${error}`);
-  }
-}
-
-self.addEventListener("fetch", function (e) {
-  var path = new URL(e.request.url).pathname;
-
-  if (path.startsWith("/files/")) {
-    var fetchPath = path.split("/files/")[1];
-
-    return e.respondWith(handleRequest(fetchPath));
-  } else {
-    return e.respondWith(
-      caches.match(e.request).then(function (response) {
-        return response || fetch(e.request);
-      })
-    );
-  }
 });
